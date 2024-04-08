@@ -1,11 +1,12 @@
+const dictionary = require('../dictionary/index.js')
+const games = require("../games"); 
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout,
     terminal: false,
     prompt: "",
 })
-const dictionary = require('../dictionary/index.js')
-const games = require("../games"); 
+
 
 const gamesArray = (
   { id: "1", game: games.knightDragonAndPrincessGame },
@@ -16,6 +17,58 @@ const gamesArray = (
   { id: "6", game: games.dropCoin }
 )
 
-async function startGame(Gameid) {
+async function startGame(gameId) {
+  const selectedGame = gamesArray.find((game) => game.id === gameId);
+    if (selectedGame) {
+        const result = await selectedGame.game();
+        countResult(result);
+        afterGame(gameId);
+    } else {
+    console.log(dictionary.global.wrongInput);
+    startLauncher();
+    }
+} 
 
+function countResult(gameResult) {
+  if (gameResult === 'draw') {
+ console.log(dictionary.global.draw)
+  } else {
+    console.log(gameResult ? dictionary.global.win : dictionary.global.lose)
+  }
 }
+
+function startLauncher() {
+  readline.question(dictionary.global.chooseGame, (answer) => {
+  if (answer === "7") {
+    stopLauncher();
+  } else {
+    startGame(answer);
+  }
+  });
+}
+function startLauncher() {
+  readline.question(dictionary.global.chooseGame, (answer) => {
+  if (answer === "7") {
+    stopLauncher();
+  } else {
+    startGame(answer);
+  }
+  });
+}
+function stopLauncher() {
+  console.log(dictionary.global.goodbye)
+  readline.close
+}
+function afterGame(gameToRepeatId) {
+  readline.question(dictionary.global.playAgain, (answer)=> {
+    if (answer === '1') {
+    startGame(gameToRepeatId)
+    } if (answer === '2') {
+    startLauncher()
+    } if (answer === '3') {
+    stopLauncher()
+    }
+  })
+
+ }
+ module.exports = { run: startLauncher };

@@ -8,14 +8,14 @@ const readline = require('readline').createInterface({
 })
 
 
-const gamesArray = (
+const gamesArray = [
   { id: "1", game: games.knightDragonAndPrincessGame },
   { id: "2", game: games.poleChudesGame },
   { id: "3", game: games.makeWordGame },
   { id: "4", game: games.blackJackGame },
   { id: "5", game: games.trueOrFalseGame },
   { id: "6", game: games.dropCoin }
-)
+]
 
 async function startGame(gameId) {
   const selectedGame = gamesArray.find((game) => game.id === gameId);
@@ -30,22 +30,14 @@ async function startGame(gameId) {
 } 
 
 function countResult(gameResult) {
-  if (gameResult === 'draw') {
- console.log(dictionary.global.draw)
+  if (gameResult === "draw") {
+      console.log(dictionary.global.draw);
   } else {
-    console.log(gameResult ? dictionary.global.win : dictionary.global.lose)
+      console.log(gameResult ? dictionary.global.win : dictionary.global.lose);
   }
 }
 
-function startLauncher() {
-  readline.question(dictionary.global.chooseGame, (answer) => {
-  if (answer === "7") {
-    stopLauncher();
-  } else {
-    startGame(answer);
-  }
-  });
-}
+
 function startLauncher() {
   readline.question(dictionary.global.chooseGame, (answer) => {
   if (answer === "7") {
@@ -57,18 +49,21 @@ function startLauncher() {
 }
 function stopLauncher() {
   console.log(dictionary.global.goodbye)
-  readline.close
+  readline.close()
 }
-function afterGame(gameToRepeatId) {
-  readline.question(dictionary.global.playAgain, (answer)=> {
-    if (answer === '1') {
-    startGame(gameToRepeatId)
-    } if (answer === '2') {
-    startLauncher()
-    } if (answer === '3') {
-    stopLauncher()
-    }
-  })
 
- }
+function afterGame(gameToRepeatId) {
+  readline.question(dictionary.global.playAgain, (answer) => {
+      if (answer === "1") {
+          startGame(gameToRepeatId);
+  }
+  if (answer === "2") {
+    startLauncher();
+  }
+  if (answer === "3") {
+    stopLauncher();
+  }
+  });
+}
+
  module.exports = { run: startLauncher };
